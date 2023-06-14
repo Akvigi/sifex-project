@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './App.css';
 import Stats from './components/Stats';
 import { Game } from './components/Game';
@@ -14,21 +14,20 @@ function App() {
   const [win1, setWin1] = useState(0)
   const [win2, setWin2] = useState(0)
   const [move, setMove] = useState(true)
-  const [interval, setInterv] = useState()
-
+  const interval = useRef();
   const startTimer1 = () => {
     return setInterval(() => {
       setTimer1((seconds) => {
-        return seconds + 1
+        return seconds + 0.1
       })
-    }, 1000)
+    }, 100)
   }
   const startTimer2 = () => {
     return setInterval(() => {
       setTimer2((seconds) => {
-        return seconds + 1
+        return seconds + 0.1
       })
-    }, 1000)
+    }, 100)
   }
   
   const cellsQuantity = (quant) => {
@@ -47,6 +46,7 @@ function App() {
 
   const endGame = (st, move) => {
     st.forEach(item => item.disabled = true)
+    clearInterval(interval.current)
     setMove(true)
     if (move === 'none') {
       return 
@@ -59,7 +59,6 @@ function App() {
 
   const openModal = (text) => {
     setTextModal(text)
-    setTimeout(() => clearInterval(interval), 500)
     setTimeout(() => setModal(true), 2000)
   }
   const closeModal = () => {
@@ -70,10 +69,10 @@ function App() {
   const checkWinCondition = (arr, i, inc, curMove) => {
     if (arr[i].marked === "X" && arr[i + inc].marked === "X" && arr[i + (inc * 2)].marked === "X") {
       endGame(arr, curMove)
-      return openModal(`Гравець1 переміг. Вітаємо! Він витратив ${timer1} секунд`)
+      return openModal(`Гравець1 переміг. Вітаємо! Він витратив ${Math.round(timer1)} секунд`)
     } else if (arr[i].marked === "O" && arr[i + inc].marked === "O" && arr[i + (inc * 2)].marked === "O") {
       endGame(arr, curMove)
-      return openModal(`Гравець2 переміг. Вітаємо! Він витратив ${timer2} секунд`)
+      return openModal(`Гравець2 переміг. Вітаємо! Він витратив ${Math.round(timer2)} секунд`)
     }
   }
   
@@ -81,31 +80,47 @@ function App() {
     const arr = [...statefield]
     arr[number].marked = curMove ? "X" : "O"
     if (curMove) {
-      clearInterval(interval)
-      setInterv(startTimer2())
+      clearInterval(interval.current)
+      interval.current = startTimer2()
     } else {
-      clearInterval(interval)
-      setInterv(startTimer1())
+      clearInterval(interval.current)
+      interval.current = startTimer1()
     }
     arr[number].disabled = true
-    const rows = Math.sqrt(cells)  
-    for (let i = 0; i < cells-(rows*2); i++) {
-      checkWinCondition(arr, i, rows, curMove) // vertical row
-      if (rows>3) {
-        checkWinCondition(arr, i, rows+1, curMove) // diagonal row from top to bot
-      }
-      checkWinCondition(arr, i, rows-1, curMove) // diagonal row from bot to top
+    const rows = Math.sqrt(cells)
+    const objAr = {
+      '3': 1,
+      '4': 2,
+      '5': 3,
+      '6': 4,
+      '7': 5,
+      '8': 6,
+      '9': 7,
     }
-    if (rows < 4) {
-      checkWinCondition(arr, 0, rows+1, curMove) // diagonal row from top to bot
-    }
-    for (let i = currRow*rows; i < currRow*rows+rows-2; i++) {
-      checkWinCondition(arr, i, 1, curMove) // horizontal row
-    }
+    const count = rows * objAr[`${rows}`]
     if (arr.every(item => item.marked) && !textModal) {
       endGame(arr, 'none')
-      return openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${timer1+timer2} секунд`) 
+      openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${timer1+timer2} секунд`) 
     }
+    for (let i = 0; i < count; i++) {
+      checkWinCondition(arr, i, rows, curMove) // vertical row
+      if (rows > 3) {
+        if (i !== 1) {
+          checkWinCondition(arr, i, rows+1, curMove) // diagonal row from top to bot
+        }
+        if (i % rows !== 0 || i === 0) {
+          checkWinCondition(arr, i, rows-1, curMove) // diagonal row from bot to top
+        }
+      }
+    }
+    if (rows < 4) {
+      checkWinCondition(arr, 2, 2, curMove) // diagonal row from bot to top
+      checkWinCondition(arr, 0, 4, curMove) // diagonal row from top to bot
+    }
+    for (let i = currRow * rows; i < (currRow * rows)+(rows-2); i++) {
+      checkWinCondition(arr, i, 1, curMove) // horizontal row
+    }
+    
     setField([...arr])
     setMove(curMove => !curMove)
   }
@@ -113,8 +128,8 @@ function App() {
   const changeField = () => {
     setTimer1(0)
     setTimer2(0)
-    clearInterval(interval)
-    setInterv(startTimer1())
+    clearInterval(interval.current)
+    interval.current = startTimer1()
     setCells(futureCells)
     setField(cellsQuantity(futureCells))
     setMove(true)
@@ -126,8 +141,8 @@ function App() {
         win1={win1}
         win2={win2}
         changeField={setFutureCells}
-        timer1={timer1}
-        timer2={timer2}
+        timer1={Math.round(timer1)}
+        timer2={Math.round(timer2)}
       />
       <Game
         cellsQuantity={cells}
