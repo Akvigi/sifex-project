@@ -1,38 +1,142 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
 .App {
   text-align: center;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  /* padding: 0 50px; */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.overlay {
+    background-color: rgba(0, 0, 0, 0.25);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1200;
+    opacity: 0;
+    transition: 1s;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.modal-cont {
+  
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.statistics {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 5px;
+  padding-left: 20px;
+}
+.choosefields {
+  display: flex;
+  flex-direction: column;
+}
+.player {
+  font-size: 18px;
 }
 
-.App-link {
-  color: #61dafb;
+.gamecontainer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0 0 100px;  
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.playbutton {
+  padding: 5px 10px;
+  font-size: 20px;
+  border: 0.5px solid;
+  margin-bottom: 10px;
+}
+
+.playfield {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.p-f81 {
+  max-width: 600px;
+}
+.p-f64 {
+  max-width: 532.8px;
+}
+.p-f49 {
+  max-width: 466.2px;
+}
+.p-f36 {
+  max-width: 399.6px;
+}
+.p-f25 {
+  max-width: 333px;
+}
+.p-f16 {
+  max-width: 266.4px;
+}
+.p-f9 {
+  max-width: 199.8px;
+}
+/* .cell {
+  padding: 99.2px;
+  border: 1px solid;
+  position: relative;
+}
+.markX {
+  position: absolute;
+  font-size: 200px;
+  top: -7%;
+  left: 17%;
+}
+.markO {
+  position: absolute;
+  font-size: 200px;
+  top: -7%;
+  left: 10%;
+} */
+
+.cell {
+  padding: 32.50px;
+  border: 1px solid;
+  position: relative;
+}
+.markX {
+  position: absolute;
+  font-size: 70px;
+  top: -7%;
+  left: 13%;
+}
+.markO {
+  position: absolute;
+  font-size: 70px;
+  top: -7%;
+  left: 9%;
 }
