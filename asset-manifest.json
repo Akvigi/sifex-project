@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/sifex-project/static/css/main.7fffed76.css",
-    "main.js": "/sifex-project/static/js/main.6c23b7c9.js",
+    "main.css": "/sifex-project/static/css/main.e3db6fc3.css",
+    "main.js": "/sifex-project/static/js/main.d6593559.js",
     "index.html": "/sifex-project/index.html",
-    "main.7fffed76.css.map": "/sifex-project/static/css/main.7fffed76.css.map",
-    "main.6c23b7c9.js.map": "/sifex-project/static/js/main.6c23b7c9.js.map"
+    "main.e3db6fc3.css.map": "/sifex-project/static/css/main.e3db6fc3.css.map",
+    "main.d6593559.js.map": "/sifex-project/static/js/main.d6593559.js.map"
   },
   "entrypoints": [
-    "static/css/main.7fffed76.css",
-    "static/js/main.6c23b7c9.js"
+    "static/css/main.e3db6fc3.css",
+    "static/js/main.d6593559.js"
   ]
 }
