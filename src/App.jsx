@@ -8,6 +8,7 @@ function App() {
   const [cells, setCells] = useState(9)
   const [futureCells, setFutureCells] = useState(9)
   const [modal, setModal] = useState(false)
+  const [textModal, setTextModal] = useState("Нічия! Спробуйте ще :)")
   const [win1, setWin1] = useState(0)
   const [win2, setWin2] = useState(0)
   const [move, setMove] = useState(true)
@@ -35,13 +36,22 @@ function App() {
     return setWin2(win2+1)
   }
   
+  const openModal = (text) => {
+    setTextModal(text)
+    setTimeout(() => setModal(true),2000)
+  }
+  const closeModal = () => {
+    setTextModal("Нічия! Спробуйте ще :)")
+    setModal(false)
+  }
+
   const checkGameProgress = (arr, i, inc, curMove) => {
-    if (arr[i].marked === "X" && arr[i + inc].marked === "X" && arr[i + inc * 2].marked === "X") {
+    if (arr[i].marked === "X" && arr[i + inc].marked === "X" && arr[i + (inc * 2)].marked === "X") {
       endGame(arr, curMove)
-      setTimeout(() => setModal(true))
-    } else if (arr[i].marked === "O" && arr[i + inc].marked === "O" && arr[i + inc * 2].marked === "O") {
+      return openModal("Гравець1 переміг. Вітаємо!")
+    } else if (arr[i].marked === "O" && arr[i + inc].marked === "O" && arr[i + (inc * 2)].marked === "O") {
       endGame(arr, curMove)
-      setTimeout(() => setModal(true))
+      return openModal("Гравець2 переміг. Вітаємо!") 
     }
   }
   
@@ -49,10 +59,12 @@ function App() {
     const arr = [...statefield]
     arr[number].marked = curMove ? "X" : "O"
     arr[number].disabled = true
-    const rows = Math.sqrt(cells) 
+    const rows = Math.sqrt(cells)  
     for (let i = 0; i < cells-(rows*2); i++) {
       checkGameProgress(arr, i, rows, curMove) // vertical row
-      checkGameProgress(arr, i, rows+1, curMove) // diagonal row from top to bot
+      if (i + ((rows+1)*2) < cells) {
+        checkGameProgress(arr, i, rows+1, curMove) // diagonal row from top to bot
+      }
       checkGameProgress(arr, i, rows-1, curMove) // diagonal row from bot to top
     }
     for (let i = currRow*rows; i < currRow*rows+rows-2; i++) {
@@ -78,7 +90,7 @@ function App() {
         markCell={markCell}
         field={field}
       />
-      {modal && <Modal />}
+      {modal && <Modal textOfEnd={textModal} closeModal={closeModal}/>}
     </div>
   );
 }

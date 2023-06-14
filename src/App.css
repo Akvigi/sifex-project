@@ -19,7 +19,9 @@ button {
   border: none;
   background-color: transparent;
 }
-
+button:not(:disabled) {
+  cursor: pointer;
+}
 .App {
   text-align: center;
   align-items: center;
@@ -41,12 +43,22 @@ button {
     justify-content: center;
     align-items: center;
     z-index: 1200;
-    opacity: 0;
+    opacity: 1;
     transition: 1s;
 }
 
 .modal-cont {
-  
+  padding: 20px;
+  background-color: wheat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalbtn {
+  border: 1px solid;
+  margin-top: 10px;
+  padding: 5px 10px;
 }
 
 .statistics {
@@ -85,25 +97,25 @@ button {
   flex-wrap: wrap;
 }
 .p-f81 {
-  max-width: 600px;
+  max-width: 601px;
 }
 .p-f64 {
-  max-width: 532.8px;
+  max-width: 533.8px;
 }
 .p-f49 {
-  max-width: 466.2px;
+  max-width: 468.2px;
 }
 .p-f36 {
-  max-width: 399.6px;
+  max-width: 401.6px;
 }
 .p-f25 {
-  max-width: 333px;
+  max-width: 335px;
 }
 .p-f16 {
-  max-width: 266.4px;
+  max-width: 268.4px;
 }
 .p-f9 {
-  max-width: 199.8px;
+  max-width: 201.8px;
 }
 /* .cell {
   padding: 99.2px;
