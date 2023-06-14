@@ -5,8 +5,8 @@ import { Game } from './components/Game';
 import Modal from './components/Modal';
 
 function App() {
-  const [cells, setCells] = useState(81)
-  const [futureCells, setFutureCells] = useState(81)
+  const [cells, setCells] = useState(9)
+  const [futureCells, setFutureCells] = useState(9)
   const [modal, setModal] = useState(false)
   const [win1, setWin1] = useState(0)
   const [win2, setWin2] = useState(0)
