@@ -100,7 +100,7 @@ function App() {
     const count = rows * objAr[`${rows}`]
     if (arr.every(item => item.marked) && !textModal) {
       endGame(arr, 'none')
-      openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${timer1+timer2} секунд`) 
+      openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${Math.round(timer1+timer2)} секунд`) 
     }
     for (let i = 0; i < count; i++) {
       checkWinCondition(arr, i, rows, curMove) // vertical row
