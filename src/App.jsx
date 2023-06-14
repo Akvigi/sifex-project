@@ -8,7 +8,7 @@ function App() {
   const [cells, setCells] = useState(9)
   const [futureCells, setFutureCells] = useState(9)
   const [modal, setModal] = useState(false)
-  const [textModal, setTextModal] = useState("Нічия! Спробуйте ще :)")
+  const [textModal, setTextModal] = useState(null)
   const [win1, setWin1] = useState(0)
   const [win2, setWin2] = useState(0)
   const [move, setMove] = useState(true)
@@ -30,6 +30,9 @@ function App() {
   const endGame = (st, move) => {
     st.forEach(item => item.disabled = true)
     setMove(true)
+    if (move === 'none') {
+      return 
+    }
     if (move) {
       return setWin1(win1+1)
     }
@@ -56,6 +59,8 @@ function App() {
   }
   
   const markCell = (statefield, number, currRow, curMove) => {
+    const startSDate = new Date()
+
     const arr = [...statefield]
     arr[number].marked = curMove ? "X" : "O"
     arr[number].disabled = true
@@ -69,6 +74,10 @@ function App() {
     }
     for (let i = currRow*rows; i < currRow*rows+rows-2; i++) {
       checkGameProgress(arr, i, 1, curMove) // horizontal row
+    }
+    if (arr.every(item => item.marked) && !textModal) {
+      endGame(arr, 'none')
+      return openModal("Нічия! Спробуйте ще :)") 
     }
     setField([...arr])
     setMove(curMove => !curMove)
