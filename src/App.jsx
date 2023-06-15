@@ -73,7 +73,12 @@ function App() {
 
   const checkWinCondition = (arr, i, inc, curMove) => {
     let a = i + inc
-    let b = i + (inc*2)
+    let b = i + (inc * 2)
+    if (b === arr.length) {
+      b = b - 1
+    } else if (b > arr.length) {
+      b = b - (b - arr.length)
+    }
     if (arr[i].marked === "X" && arr[a].marked === "X" && arr[b].marked === "X") {
       endGame(arr, curMove, [i, a, b])
       return openModal(`Гравець1 переміг. Вітаємо! Він витратив ${Math.round(timer1)} секунд`)
@@ -104,7 +109,7 @@ function App() {
       '8': 6,
       '9': 7,
     }
-    const count = rows * objAr[`${rows}`]
+    const count = (rows * objAr[`${rows}`])
     if (arr.every(item => item.marked) && !textModal) {
       endGame(arr, 'none', [])
       openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${Math.round(timer1+timer2)} секунд`) 
@@ -112,9 +117,7 @@ function App() {
     for (let i = 0; i < count; i++) {
       checkWinCondition(arr, i, rows, curMove) // vertical row
       if (rows > 3) {
-        if (i !== 1) {
-          checkWinCondition(arr, i, rows+1, curMove) // diagonal row from top to bot
-        }
+        checkWinCondition(arr, i, rows+1, curMove) // diagonal row from top to bot
         if (i % rows !== 0 || i === 0) {
           checkWinCondition(arr, i, rows-1, curMove) // diagonal row from bot to top
         }
