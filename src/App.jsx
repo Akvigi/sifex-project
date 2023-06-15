@@ -44,7 +44,7 @@ function App() {
 
   const [field, setField] = useState(cellsQuantity(cells))
 
-  const endGame = (st, move, winCells) => {
+  const endGame = (st, move, winCells, timer) => {
     st.forEach(item => {
       item.disabled = true
     })
@@ -53,12 +53,16 @@ function App() {
     }
     clearInterval(interval.current)
     setMove(true)
+
     if (move === 'none') {
+      openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${Math.round(timer)} секунд`)
       return 
     }
     if (move) {
+      openModal(`Гравець1 переміг. Вітаємо! Він витратив ${Math.round(timer)} секунд`)
       return setWin1(win1+1)
     }
+    openModal(`Гравець2 переміг. Вітаємо! Він витратив ${Math.round(timer)} секунд`)
     return setWin2(win2+1)
   }
 
@@ -71,23 +75,41 @@ function App() {
     setModal(false)
   }
 
-  const checkWinCondition = (arr, i, inc, curMove) => {
+  const checkWinCondition = (arr, i, inc, curMove, diag) => {
     let a = i + inc
     let b = i + (inc * 2)
     if (b === arr.length) {
       b = b - 1
     } else if (b > arr.length) {
-      b = b - (b - arr.length)
+      b = b - (b - arr.length) - 1
     }
-    if (arr[i].marked === "X" && arr[a].marked === "X" && arr[b].marked === "X") {
-      endGame(arr, curMove, [i, a, b])
-      return openModal(`Гравець1 переміг. Вітаємо! Він витратив ${Math.round(timer1)} секунд`)
-    } else if (arr[i].marked === "O" && arr[a].marked === "O" && arr[b].marked === "O") {
-      endGame(arr, curMove, [i, a, b])
-      return openModal(`Гравець2 переміг. Вітаємо! Він витратив ${Math.round(timer2)} секунд`)
+    const arrOfCheck = [arr[i], arr[a], arr[b]]
+    const checkRowDiff = (arr) => {
+      let d = true
+      for (let i = 0; i < arr.length; i++) {
+        for (let index = i+1; index < arr.length; index++) {
+          if (arr[i].currRow === arr[index].currRow) {
+            return d = false
+          }
+        }
+        if (arr[i + 1] && Math.abs(arr[i + 1].currRow - arr[i].currRow) !== 1) {
+          return d = false
+        }
+        if (!d) {
+          break
+        }
+      }
+      return d
+    }
+    const xWin = arrOfCheck.every(item => item.marked === 'X')  
+    const oWin = arrOfCheck.every(item => item.marked === 'O')
+    if ((xWin && !diag) || (diag && xWin && checkRowDiff(arrOfCheck))) {
+      endGame(arr, curMove, [i, a, b],timer1)
+    } else if ((oWin && !diag) || (diag && oWin && checkRowDiff(arrOfCheck))) {
+      endGame(arr, curMove, [i, a, b],timer2)
     }
   }
-  
+
   const markCell = (statefield, number, currRow, curMove) => {
     const arr = [...statefield]
     arr[number].marked = curMove ? "X" : "O"
@@ -111,15 +133,14 @@ function App() {
     }
     const count = (rows * objAr[`${rows}`])
     if (arr.every(item => item.marked) && !textModal) {
-      endGame(arr, 'none', [])
-      openModal(`Нічия! Спробуйте ще :) Загальний час гри: ${Math.round(timer1+timer2)} секунд`) 
+      endGame(arr, 'none', [], timer1+timer2)
     }
     for (let i = 0; i < count; i++) {
       checkWinCondition(arr, i, rows, curMove) // vertical row
       if (rows > 3) {
-        checkWinCondition(arr, i, rows+1, curMove) // diagonal row from top to bot
+        checkWinCondition(arr, i, rows+1, curMove, true) // diagonal row from top to bot
         if (i % rows !== 0 || i === 0) {
-          checkWinCondition(arr, i, rows-1, curMove) // diagonal row from bot to top
+          checkWinCondition(arr, i, rows-1, curMove, true) // diagonal row from bot to top
         }
       }
     }
