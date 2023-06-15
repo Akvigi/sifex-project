@@ -124,7 +124,7 @@ button:not(:disabled) {
 }
 
 .win {
-  background-color: red;
+  background-color: rgb(13, 228, 13);
 }
 
 .markX {
