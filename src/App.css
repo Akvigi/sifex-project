@@ -29,7 +29,6 @@ button:not(:disabled) {
   height: 100%;
   display: flex;
   flex-direction: row;
-  /* padding: 0 50px; */
 }
 
 .overlay {
@@ -117,29 +116,17 @@ button:not(:disabled) {
 .p-f9 {
   max-width: 210.8px;
 }
-/* .cell {
-  padding: 99.2px;
-  border: 1px solid;
-  position: relative;
-}
-.markX {
-  position: absolute;
-  font-size: 200px;
-  top: -7%;
-  left: 17%;
-}
-.markO {
-  position: absolute;
-  font-size: 200px;
-  top: -7%;
-  left: 10%;
-} */
 
 .cell {
   padding: 32.50px;
   border: 1px solid;
   position: relative;
 }
+
+.win {
+  background-color: red;
+}
+
 .markX {
   position: absolute;
   font-size: 70px;

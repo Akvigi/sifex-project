@@ -14,11 +14,11 @@ export const Game = ({newGame, field, move, markCell, cellsQuantity}) => {
         <h3>Хід: {move ? "Гравець1" : "Гравець2"}</h3>  
           
         <ul className={`playfield p-f${cellsQuantity}`}>
-          {field.map(({marked, index, disabled, currRow}) => <button
+          {field.map(({marked, index, disabled, currRow, win}) => <button
             key={index}
             type='button'
             disabled= {disabled} 
-            className='cell'
+            className={win ? 'cell win' : 'cell'}
             onClick={() => markCell(field, index, currRow, move)}
           >
             {marked === 'X' &&
